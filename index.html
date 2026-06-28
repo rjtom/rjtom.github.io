@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raju Thomas | AI Engineer</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables for Themes */
+        :root[data-theme="dark"] {
+            --bg-primary: #090a0f;
+            --bg-secondary: #12131a;
+            --bg-glass: rgba(18, 19, 26, 0.7);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --accent-primary: #6366f1; /* Indigo */
+            --accent-secondary: #a855f7; /* Purple */
+            --accent-glow: rgba(99, 102, 241, 0.15);
+            --glow-color: 99, 102, 241;
+            --terminal-bg: #0b0c10;
+            --shadow-primary: rgba(0, 0, 0, 0.5);
+            --disclaimer-bg: rgba(245, 158, 11, 0.1);
+            --disclaimer-border: rgba(245, 158, 11, 0.25);
+            --disclaimer-text: #fbbf24;
+        }
+
+        :root[data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.75);
+            --border-glass: rgba(99, 102, 241, 0.12);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --accent-primary: #4f46e5;
+            --accent-secondary: #7c3aed;
+            --accent-glow: rgba(79, 70, 229, 0.08);
+            --glow-color: 79, 70, 229;
+            --terminal-bg: #0f172a;
+            --shadow-primary: rgba(99, 102, 241, 0.05);
+            --disclaimer-bg: rgba(217, 119, 6, 0.08);
+            --disclaimer-border: rgba(217, 119, 6, 0.2);
+            --disclaimer-text: #b45309;
+        }
+
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Abstract Premium Geometric Background Elements */
+        .bg-glow-one {
+            position: absolute;
+            top: -200px;
+            right: -100px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(var(--glow-color), 0.12) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .bg-glow-two {
+            position: absolute;
+            top: 500px;
+            left: -200px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Nav Header */
+        header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            background-color: var(--bg-glass);
+            border-bottom: 1px solid var(--border-glass);
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1.25rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border-glass);
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-primary);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--accent-glow);
+            border-color: var(--accent-primary);
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+        }
+
+        /* Toggle animation styling */
+        .theme-toggle .sun-icon { opacity: 0; transform: translateY(40px); }
+        .theme-toggle .moon-icon { opacity: 1; transform: translateY(0); }
+
+        [data-theme="light"] .theme-toggle .sun-icon { opacity: 1; transform: translateY(0); }
+        [data-theme="light"] .theme-toggle .moon-icon { opacity: 0; transform: translateY(-40px); }
+
+        /* MANDATORY EXPERIMENTAL DISCLAIMER BANNER */
+        .disclaimer-banner {
+            max-width: 1100px;
+            margin: 1.5rem auto 0;
+            padding: 1rem 1.5rem;
+            background-color: var(--disclaimer-bg);
+            border: 1px solid var(--disclaimer-border);
+            border-radius: 12px;
+            color: var(--disclaimer-text);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .disclaimer-banner svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            margin-top: 1px;
+            stroke: currentColor;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 5rem 2rem 4rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .profile-card {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px var(--shadow-primary);
+            max-width: 800px;
+            width: 100%;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            margin-bottom: 2rem;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+        }
+
+        .profile-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: var(--accent-glow);
+            border: 1px solid rgba(var(--glow-color), 0.2);
+            color: var(--accent-primary);
+            padding: 0.4rem 1rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: 'Space Grotesk', sans-serif;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-badge span {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-primary);
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse-glow 2s infinite;
+        }
+
+        .name-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+            letter-spacing: -1.5px;
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: var(--accent-primary);
+            margin-bottom: 1.5rem;
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: -0.5px;
+        }
+
+        .tagline {
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin: 0 auto 2rem;
+            font-weight: 400;
+        }
+
+        .meta-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            border-top: 1px solid var(--border-glass);
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .meta-item svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--accent-primary);
+            fill: none;
+        }
+
+        /* Interactive Terminal Playground (Showcase Raju's Core Agent Expertness) */
+        .terminal-container {
+            max-width: 800px;
+            width: 100%;
+            margin: 1.5rem auto 3rem;
+            background-color: var(--terminal-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border-glass);
+            box-shadow: 0 15px 35px var(--shadow-primary);
+            text-align: left;
+            overflow: hidden;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .terminal-header {
+            background-color: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--border-glass);
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .terminal-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .dot-red { background-color: #ef4444; }
+        .dot-yellow { background-color: #f59e0b; }
+        .dot-green { background-color: #10b981; }
+
+        .terminal-title {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+
+        .terminal-body {
+            padding: 1.25rem;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            color: #38bdf8;
+        }
+
+        .terminal-prompt {
+            color: #a855f7;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .terminal-cmd {
+            color: #38bdf8;
+        }
+
+        .terminal-output {
+            color: #e2e8f0;
+            line-height: 1.5;
+            white-space: pre-line;
+        }
+
+        .terminal-btn-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1rem;
+            padding: 0 1.25rem 1.25rem;
+        }
+
+        .terminal-action-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-glass);
+            color: var(--text-primary);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .terminal-action-btn:hover {
+            border-color: var(--accent-primary);
+            background: var(--accent-glow);
+            transform: translateY(-2px);
+        }
+
+        /* Core Skill Sections */
+        .sections-wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1rem 2rem 5rem;
+        }
+
+        .section-headline {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 4rem 0 2rem;
+            text-align: center;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-headline::after {
+            content: '';
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 10px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px var(--shadow-primary);
+            border-color: rgba(var(--glow-color), 0.25);
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background-color: var(--accent-glow);
+            border: 1px solid rgba(var(--glow-color), 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-primary);
+        }
+
+        .card-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            fill: none;
+        }
+
+        .card-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .card-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .tags-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: auto;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            font-weight: 600;
+            background-color: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-glass);
+            padding: 0.3rem 0.75rem;
+            border-radius: 6px;
+            color: var(--accent-primary);
+        }
+
+        /* Skills Pill Wall */
+        .skills-wall {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .skill-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            padding: 0.6rem 1.25rem;
+            border-radius: 100px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: default;
+        }
+
+        .skill-pill:hover {
+            color: var(--accent-primary);
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .skill-pill svg {
+            width: 18px;
+            height: 18px;
+            stroke-width: 2;
+        }
+
+        /* Footer & Contact Quicklist */
+        footer {
+            border-top: 1px solid var(--border-glass);
+            background-color: var(--bg-secondary);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .social-row {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-link {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid var(--border-glass);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            color: var(--accent-primary);
+            border-color: var(--accent-primary);
+            background-color: var(--accent-glow);
+            transform: scale(1.08);
+        }
+
+        .social-link svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            fill: none;
+        }
+
+        .copyright {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse-glow {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(var(--glow-color), 0.7);
+            }
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 8px rgba(var(--glow-color), 0);
+            }
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(var(--glow-color), 0);
+            }
+        }
+
+        /* Responsive Tweaks */
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 3rem 1.25rem 2rem;
+            }
+            .profile-card {
+                padding: 1.5rem;
+            }
+            .meta-info {
+                flex-direction: column;
+                gap: 0.75rem;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow-one"></div>
+    <div class="bg-glow-two"></div>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">RT.AI</div>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeBtn" aria-label="Toggle Theme">
+                    <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-11.314l.707.707m11.314 11.314l.707.707M12 17a5 5 0 100-10 5 5 0 000 10z"/></svg>
+                    <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MANDATORY EXPERIMENTAL DISCLAIMER BANNER -->
+    <div class="disclaimer-banner">
+        <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        <span><strong>Experimental & Imaginative/Fictional Disclaimer:</strong> This project is completely experimental. All features, data, and integrations are entirely imaginative/fictional and designed solely for demonstration, prototyping, and educational purposes.</span>
+    </div>
+
+    <!-- Hero Section -->
+    <main class="hero-section">
+        <div class="profile-card">
+            <div class="profile-badge">
+                <span></span> Active Now: Agent Deployment
+            </div>
+            
+            <h1 class="name-title">Raju Thomas</h1>
+            <div class="subtitle">AI Engineer</div>
+            
+            <p class="tagline">Passionate about building autonomous agent workflows and fine-tuning LLMs.</p>
+            
+            <div class="meta-info">
+                <div class="meta-item">
+                    <svg viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    Cherry Hill, NJ
+                </div>
+                <div class="meta-item">
+                    <svg viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    Specializing in Multi-Agent Orchestration
+                </div>
+            </div>
+        </div>
+
+        <!-- Terminal Showcase (Interactive Experience) -->
+        <div class="terminal-container">
+            <div class="terminal-header">
+                <div class="terminal-dots">
+                    <div class="terminal-dot dot-red"></div>
+                    <div class="terminal-dot dot-yellow"></div>
+                    <div class="terminal-dot dot-green"></div>
+                </div>
+                <div class="terminal-title">raju_terminal_agent.py</div>
+                <div style="width: 30px;"></div>
+            </div>
+            <div class="terminal-body" id="termBody">
+                <span style="color: #64748b;">// Pick an AI agent sequence below to launch simulation</span>
+                <div class="terminal-prompt">> <span class="terminal-cmd">await agent.initialize()</span></div>
+                <div class="terminal-output">Ready... Select a command below to prompt the AI agent model.</div>
+            </div>
+            <div class="terminal-btn-grid">
+                <button class="terminal-action-btn" onclick="runCommand('deploy')">
+                    🚀 Run Agent Workflow
+                </button>
+                <button class="terminal-action-btn" onclick="runCommand('finetune')">
+                    ⚡ Tune 8B LLM
+                </button>
+                <button class="terminal-action-btn" onclick="runCommand('audit')">
+                    🔍 Evaluate Security
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Main Content Grid -->
+    <div class="sections-wrapper">
+        
+        <h2 class="section-headline">Strategic Focus Areas</h2>
+        <div class="cards-grid">
+            
+            <div class="card">
+                <div class="card-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                </div>
+                <h3 class="card-title">Multi-Agent Systems</h3>
+                <p class="card-desc">Designing, nesting, and executing self-correcting agent chains using Frameworks like LangGraph. Specializing in autonomous workflow execution loops.</p>
+                <div class="tags-wrapper">
+                    <span class="tag">LangGraph</span>
+                    <span class="tag">Autogen</span>
+                    <span class="tag">CrewAI</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l.707-.707m2.828 9.9a5 5 0 113.536 0V19h-3.536v-1.1z"/></svg>
+                </div>
+                <h3 class="card-title">LLM Fine-Tuning</h3>
+                <p class="card-desc">Custom adapting open-source base models via LoRA, QLoRA, and full-parameter tuning to execute specialized functional domain workflows accurately.</p>
+                <div class="tags-wrapper">
+                    <span class="tag">Unsloth</span>
+                    <span class="tag">HugginFace</span>
+                    <span class="tag">Axolotl</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/></svg>
+                </div>
+                <h3 class="card-title">RAG Architectures</h3>
+                <p class="card-desc">Creating scalable vector pipelines using high performance embedding APIs, Hybrid search strategies, and semantic rank controllers for enterprise knowledge bases.</p>
+                <div class="tags-wrapper">
+                    <span class="tag">Qdrant</span>
+                    <span class="tag">Pinecone</span>
+                    <span class="tag">LlamaIndex</span>
+                </div>
+            </div>
+
+        </div>
+
+        <h2 class="section-headline">Tech stack</h2>
+        <div class="skills-wall">
+            <span class="skill-pill">🐍 Python</span>
+            <span class="skill-pill">🔥 PyTorch</span>
+            <span class="skill-pill">🤖 LLMs (Llama, Mistral)</span>
+            <span class="skill-pill">⛓️ LangChain / LangGraph</span>
+            <span class="skill-pill">⚡ FastAPI</span>
+            <span class="skill-pill">📦 Docker</span>
+            <span class="skill-pill">🛠️ Git & CI/CD</span>
+            <span class="skill-pill">📈 Weights & Biases</span>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">Raju Thomas</div>
+        <div style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem;">Building the future of Agentic Workflows</div>
+        <div class="social-row">
+            <a href="https://github.com/rjtom" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+            </a>
+            <a href="mailto:contact@example.com" class="social-link" aria-label="Email Me">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </a>
+        </div>
+        <p class="copyright">© 2026 Raju Thomas. All rights reserved.</p>
+    </footer>
+
+    <!-- Interactive JS scripts -->
+    <script>
+        // Theme switching logic
+        const htmlElement = document.documentElement;
+        const themeBtn = document.getElementById('themeBtn');
+
+        // Check system settings
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+        
+        function setTheme(theme) {
+            htmlElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        }
+
+        // Initialize theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            setTheme(savedTheme);
+        } else {
+            setTheme(prefersDark.matches ? 'dark' : 'light');
+        }
+
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            setTheme(newTheme);
+        });
+
+        // Command simulator logic
+        function runCommand(type) {
+            const term = document.getElementById('termBody');
+            
+            if (type === 'deploy') {
+                term.innerHTML = `
+                    <div class="terminal-prompt">> <span class="terminal-cmd">await agent.deployWorkflow("prod-agent")</span></div>
+                    <div style="color: #64748b;">[System] Spinning up dynamic executor sandbox...</div>
+                    <div style="color: #a855f7;">[Agent] Researching plan nodes for target scope... Done.</div>
+                    <div style="color: #10b981;">[Agent] Validating execution safety locks... [PASSED]</div>
+                    <div style="color: #6366f1;">[Agent] Compiling graph states... Running.</div>
+                    <div style="color: #10b981; font-weight: bold;">✔ Agent "prod-agent" successfully deployed to cluster! Live active state matching user target.</div>
+                `;
+            } else if (type === 'finetune') {
+                term.innerHTML = `
+                    <div class="terminal-prompt">> <span class="terminal-cmd">train_session.launch(base="Llama-3-8B", data="agent_corpus")</span></div>
+                    <div style="color: #64748b;">[Train] Initializing HuggingFace trainer hook...</div>
+                    <div style="color: #a855f7;">[Train] Loading PEFT adapter spec (LoRA, r=16, alpha=32)...</div>
+                    <div style="color: #e2e8f0;">[Epoch 1/3] Loss: 1.482 | Grad Norm: 0.125</div>
+                    <div style="color: #e2e8f0;">[Epoch 2/3] Loss: 0.984 | Grad Norm: 0.089</div>
+                    <div style="color: #e2e8f0;">[Epoch 3/3] Loss: 0.612 | Grad Norm: 0.054</div>
+                    <div style="color: #10b981; font-weight: bold;">✔ PEFT fine-tune completed! Merging adapters and uploading weights to personal Biohub repository!</div>
+                `;
+            } else if (type === 'audit') {
+                term.innerHTML = `
+                    <div class="terminal-prompt">> <span class="terminal-cmd">security_auditor.run_scan(target="/workspace")</span></div>
+                    <div style="color: #64748b;">[Scan] Loading AST-based security rule templates...</div>
+                    <div style="color: #fbbf24;">[Scan] Auditing local config files for hidden environment leakage...</div>
+                    <div style="color: #10b981;">[Scan] Checking CORS configurations & sandbox policy limits... [FINE]</div>
+                    <div style="color: #10b981; font-weight: bold;">✔ Security Audit completed successfully. 0 high risk vulnerabilities found. Safe to proceed with production deploy.</div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
